@@ -4,6 +4,17 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>Kreisverkehr.NetSsdp</PackageId>
+    <Title>NetSsdp</Title>
+    <Description>NetSsdp is a small .NET library for working with Simple Service Discovery Protocol (SSDP). It provides discovery, notification handling, and message parsing for SSDP devices and services.</Description>
+    <Summary>Lightweight .NET SSDP client library.</Summary>
+    <Version>0.0.0</Version>
+    <Authors>Kreisverkehr</Authors>
+    <Company>Kreisverkehr</Company>
+    <Copyright>Copyright (c) 2026 Kreisverkehr</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Kreisverkehr/NetSsdp</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

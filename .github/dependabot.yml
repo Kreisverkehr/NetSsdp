@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/src/NetSsdp"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "automated update"
