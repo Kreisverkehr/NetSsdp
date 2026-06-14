@@ -25,9 +25,11 @@ var ssdpServiceCollection = services.GetRequiredService<IReadOnlyCollection<Ssdp
 Console.WriteLine("Press [ENTER] to exit.");
 Console.WriteLine("Press [P] to print currently discovered services.");
 Console.WriteLine("Press [D] to discover any media server.");
+Console.WriteLine("Press [A] to discover all devices.");
 ConsoleKeyInfo key;
 while((key = Console.ReadKey()).Key != ConsoleKey.Enter)
 {
+    Console.Write("\b \b");
     if(key.KeyChar == 'p')
         PrintServices();
 
@@ -45,17 +47,6 @@ async Task DiscoverAll()
     Console.WriteLine("Discovery finished");
 }
 
-void PrintServices()
-{
-    ConsoleTableBuilder
-        .From(ssdpServiceCollection
-            .Select(s => new ServiceRec(s.Server, s.UniqueServiceName, s.Status.ToString()))
-            .ToList()
-        )
-        .WithTitle("Services")
-        .ExportAndWrite();
-}
-
 async Task DiscoverMediaServers()
 {
     var client = services.GetRequiredService<ISsdpClient>();
@@ -63,4 +54,16 @@ async Task DiscoverMediaServers()
     Console.WriteLine("Discovery finished");
 }
 
-record ServiceRec(string? Server, string Usn, string Status);
+void PrintServices()
+{
+    ConsoleTableBuilder
+        .From(ssdpServiceCollection
+            .Select(s => new ServiceRec(s.Server, s.UniqueServiceName, s.Status.ToString(), s.TimeToLive))
+            .ToList()
+        )
+        .WithTitle("Services")
+        .ExportAndWrite();
+    Console.WriteLine();
+}
+
+record ServiceRec(string? Server, string Usn, string Status, TimeSpan? TimeToLive = null);

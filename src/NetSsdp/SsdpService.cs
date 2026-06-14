@@ -6,7 +6,9 @@ namespace Kreisverkehr.NetSsdp;
 
 public class SsdpService
 {
-    private CancellationTokenSource? tokenSource;
+    private const int DEFAULT_MAX_AGE_SECONDS = 1800;
+    private DateTimeOffset _lastUpdate = DateTimeOffset.UtcNow;
+    private DateTimeOffset _cacheTimeout = DateTimeOffset.UtcNow.AddSeconds(DEFAULT_MAX_AGE_SECONDS);
 
     private readonly ILogger<SsdpService>? _logger;
 
@@ -16,7 +18,9 @@ public class SsdpService
 
     public required string UniqueServiceName { get; set; }
 
-    public SsdpServiceStatus Status { get; set; } = SsdpServiceStatus.Alive;
+    public SsdpServiceStatus Status => _cacheTimeout > DateTimeOffset.UtcNow ? SsdpServiceStatus.Alive : SsdpServiceStatus.Dead;
+
+    public TimeSpan TimeToLive => _cacheTimeout - DateTimeOffset.UtcNow;
 
     public SsdpService() { }
 
@@ -55,7 +59,7 @@ public class SsdpService
     {
         ServiceDescriptionLocation = new(notification.Location);
         Server = notification.Server;
-        RenewStatusTimer(notification.CacheControl.MaxAge ?? TimeSpan.FromSeconds(1800));
+        RenewStatusTimer(notification.CacheControl.MaxAge ?? TimeSpan.FromSeconds(DEFAULT_MAX_AGE_SECONDS));
         return this;
     }
 
@@ -63,19 +67,13 @@ public class SsdpService
     {
         ServiceDescriptionLocation = new(response.Location);
         Server = response.Server;
-        RenewStatusTimer(response.CacheControl.MaxAge ?? TimeSpan.FromSeconds(1800));
+        RenewStatusTimer(response.CacheControl.MaxAge ?? TimeSpan.FromSeconds(DEFAULT_MAX_AGE_SECONDS));
         return this;
     }
 
     private async void RenewStatusTimer(TimeSpan timeToUpdate)
     {
-        await (tokenSource?.CancelAsync() ?? Task.CompletedTask);
-        tokenSource = new();
-        try
-        {
-            await Task.Delay(timeToUpdate, tokenSource.Token)
-                .ContinueWith((_) => { Status = SsdpServiceStatus.Dead; }, tokenSource.Token);
-        }
-        catch (TaskCanceledException) { }
+        _lastUpdate = DateTimeOffset.UtcNow;
+        _cacheTimeout = _lastUpdate.Add(timeToUpdate);
     }
 }

@@ -9,7 +9,12 @@ namespace Kreisverkehr.NetSsdp;
 
 public interface ISsdpServiceCollection : IReadOnlyDictionary<string, SsdpService>, IReadOnlyCollection<SsdpService>;
 
-public class SsdpServiceCollection : ISsdpServiceCollection, IReadOnlyDictionary<string, SsdpService>, IReadOnlyCollection<SsdpService>
+internal interface IInternalSsdpServiceCollection : ISsdpServiceCollection
+{
+    ConcurrentDictionary<string, SsdpService> InternalCollection { get; }
+}
+
+public class SsdpServiceCollection : IInternalSsdpServiceCollection, ISsdpServiceCollection, IReadOnlyDictionary<string, SsdpService>, IReadOnlyCollection<SsdpService>
 {
     private readonly ISsdpClient _ssdpClient;
     private readonly ILoggerFactory? _loggerFactory;
@@ -22,6 +27,7 @@ public class SsdpServiceCollection : ISsdpServiceCollection, IReadOnlyDictionary
 
     public int Count => _ssdpServices.Count;
 
+    public ConcurrentDictionary<string, SsdpService> InternalCollection => _ssdpServices;
 
     public SsdpService this[string key] => _ssdpServices[key];
 

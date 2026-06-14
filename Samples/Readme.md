@@ -40,15 +40,9 @@ Shows dependency injection integration and a simple interactive console app for 
 
 Each sample is a file-based .NET app. Run a sample from the `Samples` folder using:
 
-```powershell
+```bash
 cd Samples
-dotnet run --project DiscoverServices.cs
-```
-
-Or run a different sample file directly:
-
-```powershell
-dotnet run --project ListenForMessages.cs
+dotnet DiscoverServices.cs
 ```
 
 ## Notes
