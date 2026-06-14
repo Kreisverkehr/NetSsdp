@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Concurrent;
-using Kreisverkehr.NetSsdp;
 using Microsoft.Extensions.Hosting;
 
-namespace NetSsdp;
+namespace Kreisverkehr.NetSsdp;
 
 public class SsdpServiceCleanupService : BackgroundService
 {

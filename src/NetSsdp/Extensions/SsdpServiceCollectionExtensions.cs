@@ -1,5 +1,4 @@
 using Kreisverkehr.NetSsdp;
-using NetSsdp;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

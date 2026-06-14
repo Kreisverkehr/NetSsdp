@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Kreisverkehr.NetSsdp.Model;
 using Microsoft.Extensions.Logging;
 
