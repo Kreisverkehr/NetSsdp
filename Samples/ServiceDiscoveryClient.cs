@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 IServiceProvider services = new ServiceCollection()
     .AddLogging(b => b
         .AddConsole()
-        .SetMinimumLevel(LogLevel.Trace)
+        .SetMinimumLevel(LogLevel.Information)
     )
     .AddSsdp()
     .BuildServiceProvider()
