@@ -7,11 +7,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Kreisverkehr.NetSsdp;
 
-public interface ISsdpServiceCollection : IReadOnlyDictionary<string, SsdpService>, IReadOnlyCollection<SsdpService>;
+public interface ISsdpServiceCollection : IReadOnlyDictionary<string, SsdpService>, IReadOnlyCollection<SsdpService>
+{
+    event EventHandler<SsdpServiceDiscoveredEventArgs> ServiceDiscovered;
+}
 
 internal interface IInternalSsdpServiceCollection : ISsdpServiceCollection
 {
     ConcurrentDictionary<string, SsdpService> InternalCollection { get; }
+}
+
+public class SsdpServiceDiscoveredEventArgs : EventArgs
+{
+    public required SsdpService Service { get; set; }
 }
 
 public class SsdpServiceCollection : IInternalSsdpServiceCollection, ISsdpServiceCollection, IReadOnlyDictionary<string, SsdpService>, IReadOnlyCollection<SsdpService>
@@ -26,6 +34,8 @@ public class SsdpServiceCollection : IInternalSsdpServiceCollection, ISsdpServic
     public IEnumerable<SsdpService> Values => _ssdpServices.Values;
 
     public int Count => _ssdpServices.Count;
+
+    public event EventHandler<SsdpServiceDiscoveredEventArgs>? ServiceDiscovered;
 
     public ConcurrentDictionary<string, SsdpService> InternalCollection => _ssdpServices;
 
@@ -79,8 +89,9 @@ public class SsdpServiceCollection : IInternalSsdpServiceCollection, ISsdpServic
     private SsdpService CreateNewService(SsdpMessage msg)
     {
         _logger?.LogNewServiceDiscovered((msg as ISsdpServiceUpdateMessage)?.UniqueServiceName ?? string.Empty);
-
-        return SsdpService.From(msg, _loggerFactory?.CreateLogger<SsdpService>())!;
+        SsdpService svc = SsdpService.From(msg, _loggerFactory?.CreateLogger<SsdpService>())!;
+        ServiceDiscovered?.Invoke(this, new SsdpServiceDiscoveredEventArgs { Service = svc });
+        return svc;
     }
 
     private SsdpService UpdateService(SsdpMessage msg, SsdpService svc)
