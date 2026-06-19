@@ -58,7 +58,7 @@ void PrintServices()
 {
     ConsoleTableBuilder
         .From(ssdpServiceCollection
-            .Select(s => new ServiceRec(s.Server, s.UniqueServiceName, s.Status.ToString(), s.TimeToLive))
+            .Select(s => new ServiceRec(s.Server, s.UniqueServiceName, s.Status.ToString(), s.TimeToLive, s.ServiceDescriptionLocation?.ToString()))
             .ToList()
         )
         .WithTitle("Services")
@@ -66,4 +66,4 @@ void PrintServices()
     Console.WriteLine();
 }
 
-record ServiceRec(string? Server, string Usn, string Status, TimeSpan? TimeToLive = null);
+record ServiceRec(string? Server, string Usn, string Status, TimeSpan? TimeToLive = null, string? Location = null);
