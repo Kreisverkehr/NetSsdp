@@ -34,6 +34,12 @@ public class SsdpSearchMessage : SsdpMessage
         set => SetHeader(SsdpHeader.USER_AGENT, value);
     }
 
+    public string Host
+    {
+        get => GetHeader(SsdpHeader.HOST) ?? string.Empty;
+        set => SetHeader(SsdpHeader.HOST, value);
+    }
+
     public SsdpSearchMessage() : base(HEADER_LINE)
     {
         headerFields.Add(SsdpHeader.HOST, "239.255.255.250:1900");
