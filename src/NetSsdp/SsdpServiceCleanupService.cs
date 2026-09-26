@@ -8,7 +8,7 @@ public class SsdpServiceCleanupService : BackgroundService
 {
     private readonly ConcurrentDictionary<string, SsdpService> _ssdpServices;
 
-    internal SsdpServiceCleanupService(IInternalSsdpServiceCollection serviceCollection)
+    public SsdpServiceCleanupService(IInternalSsdpServiceCollection serviceCollection)
     {
         _ssdpServices = serviceCollection.InternalCollection;
     }

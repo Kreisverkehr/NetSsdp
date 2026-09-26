@@ -12,7 +12,7 @@ public interface ISsdpServiceCollection : IReadOnlyDictionary<string, SsdpServic
     event EventHandler<SsdpServiceDiscoveredEventArgs> ServiceDiscovered;
 }
 
-internal interface IInternalSsdpServiceCollection : ISsdpServiceCollection
+public interface IInternalSsdpServiceCollection : ISsdpServiceCollection
 {
     ConcurrentDictionary<string, SsdpService> InternalCollection { get; }
 }
