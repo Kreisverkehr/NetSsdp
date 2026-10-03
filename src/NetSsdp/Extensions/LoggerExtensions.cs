@@ -54,9 +54,9 @@ internal static partial class LoggerExtensions
     internal static partial void LogNewServiceDiscovered(this ILogger logger, string usn);
 
     [LoggerMessage(
-        EventId = 2100,
+        EventId = 2001,
         EventName = "SSDP Service Updated",
-        Level = LogLevel.Information,
+        Level = LogLevel.Debug,
         Message = "SSDP Service with USN {usn} updated"
         )]
     internal static partial void LogServiceUpdated(this ILogger logger, string usn);
