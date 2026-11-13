@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Kreisverkehr.NetSsdp</PackageId>
+    <AssemblyName>Kreisverkehr.NetSsdp</AssemblyName>
     <Title>NetSsdp</Title>
     <Description>NetSsdp is a small .NET library for working with Simple Service Discovery Protocol (SSDP). It provides discovery, notification handling, and message parsing for SSDP devices and services.</Description>
     <Summary>Lightweight .NET SSDP client library.</Summary>
